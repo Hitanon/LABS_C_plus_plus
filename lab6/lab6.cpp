@@ -126,7 +126,7 @@ int countVowelWords(const char* string)
 	{
 		while (!isInString(letters, string[i]) && i < len) i++;
 		if (isInString(vowels, string[i])) count++;
-		while (isInString(letters, string[i]) && string[i] < len) i++;
+		while (isInString(letters, string[i]) && i < len) i++;
 	}
 	return count;
 }
