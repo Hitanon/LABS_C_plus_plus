@@ -1,7 +1,7 @@
 ﻿/* Лабораторная работа №7, вариант 5
    Малышев Максим, 2 курс, гр. ПМИ-1 */
 
-#define MAIN
+   //#define MAIN
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +26,7 @@ void showArray(const unsigned short* arr, int size);
 void printDecArray(const unsigned short* arr, int size);
 void printDecArray(const unsigned short* arr, int size);
 void printBinArray(const unsigned short* arr, int size);
-void convertShortToBin(unsigned short value, char string[]);
+void convertShortToBin(unsigned short value, char* string);
 void printHexArray(const unsigned short* arr, int size);
 void showMenu();
 
@@ -111,12 +111,12 @@ void fillArrayRandom(unsigned short* arr, int size)
 
 bool isEvenNumberBitsUnequalTo1(unsigned short var)
 {
-	unsigned short mask = 0x8000;
+	unsigned short mask = 0x8000; // 1000 0000 0000 0000
 	unsigned short count = 0;
 	for (int i = 0; i < 16; i++)
 	{
 		if ((var & mask) == 0) count++;
-		mask >> 1;
+		mask >>= 1;
 	}
 	return count % 2 == 0;
 }
@@ -197,7 +197,7 @@ void printBinArray(const unsigned short* arr, int size)
 	printf("+----------------------------+\n");
 }
 
-void convertShortToBin(unsigned short value, char string[])
+void convertShortToBin(unsigned short value, char* string)
 {
 	unsigned short mask = 0x8000;
 
@@ -286,6 +286,18 @@ int main()
 const int CODE_WORD_LENGTH = 8;
 
 void showTask();
+void showInfo();
+void showMenu();
+int isExistFile(char* fileName);
+void selectFile(char fileName[]);
+int countCharactersFromFile(FILE* file);
+void readFile(FILE* file, int fileLength, char* string);
+char* loadData(FILE* file);
+void printData(char* string);
+bool isNumber(char string[]);
+void setKeyWord(int keyWord[]);
+void encryptDecryptData(char* data, int keyWord[]);
+void writeDataToFile(char* data);
 
 
 void showInfo()
@@ -373,13 +385,14 @@ void printData(char* string)
 
 bool isNumber(char string[])
 {
-	for (int i = 0; i < strlen(string); i++)
+	int size = strlen(string);
+	for (int i = 0; i < size; i++)
 		if (!isdigit(string[i])) return false;
 	return true;
 }
 
 
-void setKeyWord(int keyWord[])
+void setKeyWord(int* keyWord)
 {
 	bool isFailure;
 	char input[255];
@@ -398,12 +411,18 @@ void setKeyWord(int keyWord[])
 			printf("\nКодове слово должно состоять только из цифр\n");
 			isFailure = true;
 		}
+		else
+		{
+			for (int i = 0; i < CODE_WORD_LENGTH; i++)
+				keyWord[i] = input[i];
+		}
 	} while (isFailure);
 }
 
 void encryptDecryptData(char* data, int keyWord[])
 {
-	for (int i = 0; i < strlen(data); i++)
+	int size = strlen(data);
+	for (int i = 0; i < size; i++)
 		data[i] ^= keyWord[i % CODE_WORD_LENGTH];
 	printf("\nШифрование/дешифрование выполнено успешно\n");
 }
