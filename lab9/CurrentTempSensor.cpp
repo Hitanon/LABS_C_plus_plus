@@ -2,6 +2,10 @@
 
 CurrentTempSensor* arraySensors = nullptr;
 int SIZE = 0;
+char* dataOps[] = { "Отношение измеряемых величин (/)",
+"Разность измеряемых величин (-)",
+"Увеличить значение сигнала Датчика 1 (+=)",
+"Сравнение датчиков по изм.величине (<, >, ==)" };
 
 void CurrentTempSensor::setUnit(char t)
 {
@@ -64,6 +68,44 @@ bool CurrentTempSensor::isOutRange()
 	return inputSignal < MIN_SIGNAL || inputSignal > MAX_SIGNAL;
 }
 
+
+float CurrentTempSensor::operator/(CurrentTempSensor& sensor)
+{
+	if (sensor.getUnit() != getUnit()) sensor.setUnit(getUnit());
+	return getTempCurrent() / sensor.getTempCurrent();
+}
+
+float CurrentTempSensor::operator-(CurrentTempSensor& sensor)
+{
+	if (sensor.getUnit() != getUnit()) sensor.setUnit(getUnit());
+	return getTempCurrent() - sensor.getTempCurrent();
+}
+
+void CurrentTempSensor::operator+=(float k)
+{
+	inputSignal += k;
+}
+
+bool CurrentTempSensor::operator<(CurrentTempSensor& sensor)
+{
+	if (sensor.getUnit() != getUnit()) sensor.setUnit(getUnit());
+	return getTempCurrent() < sensor.getTempCurrent();
+}
+
+bool CurrentTempSensor::operator>(CurrentTempSensor& sensor)
+{
+	if (sensor.getUnit() != getUnit()) sensor.setUnit(getUnit());
+	return getTempCurrent() > sensor.getTempCurrent();
+}
+
+bool CurrentTempSensor::operator==(CurrentTempSensor& sensor)
+{
+	if (sensor.getUnit() != getUnit()) sensor.setUnit(getUnit());
+	return getTempCurrent() == sensor.getTempCurrent();
+}
+
+
+
 void createArraySensors()
 {
 	if (arraySensors != nullptr) deletArraySensors();
@@ -82,4 +124,18 @@ void fillArraySensorsInc(float tempMin, float stepTempMin, float tempMax, float 
 	{
 		arraySensors[i] = CurrentTempSensor(unit, tempMin + i * stepTempMin, tempMax + i * stepTempMax, inputS + i * stepInputS);
 	}
+}
+
+double calcSin(int index, float A, float T, double x)
+{
+	const double defaultT = 2 * Math::PI;
+	float shift = arraySensors[index].getInputSignal();
+	return (double)A * Math::Sin(T / defaultT * x) + shift;
+}
+
+double calcSinTemp(int index, float A, float T, double x)
+{
+	const double defaultT = 2 * Math::PI;
+	float shift = arraySensors[index].getTempCurrent();
+	return (double)A * Math::Sin(T / defaultT * x) + shift;
 }

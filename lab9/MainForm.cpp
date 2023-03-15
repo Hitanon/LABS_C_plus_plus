@@ -52,7 +52,7 @@ System::Void lab9::MainForm::buttonFillArrayInc_Click(System::Object^ sender, Sy
 	if (strUnit == "град.К") unit = 'K';
 	else if (strUnit == "град.С") unit = 'C';
 	else if (strUnit->Length == 1) {
-		strUnit == "К" || strUnit == "к" || strUnit == "K" || strUnit == "k" ? unit = 'K'  : ' ';
+		strUnit == "К" || strUnit == "к" || strUnit == "K" || strUnit == "k" ? unit = 'K' : ' ';
 		strUnit == "С" || strUnit == "с" || strUnit == "C" || strUnit == "c" ? unit = 'C' : ' ';
 	}
 
@@ -137,7 +137,7 @@ System::Void lab9::MainForm::dataGridView_CellEndEdit(System::Object^ sender, Sy
 			arraySensors[index].setInputSignal(inputSignal);
 			dataGridView->Rows[index]->Cells["inputSignal"]->Value = arraySensors[index].getInputSignal();
 			dataGridView->Rows[index]->Cells["tempCurrent"]->Value = arraySensors[index].ToString();
-			dataGridView->Rows[index]->Cells["isOutRange"]->Value = arraySensors[index].isOutRange() ? "Да": "Нет";
+			dataGridView->Rows[index]->Cells["isOutRange"]->Value = arraySensors[index].isOutRange() ? "Да" : "Нет";
 		}
 		catch (System::FormatException^ ex) {
 			dataGridView->Rows[index]->Cells["inputSignal"]->Value = arraySensors[index].getInputSignal();
@@ -147,12 +147,12 @@ System::Void lab9::MainForm::dataGridView_CellEndEdit(System::Object^ sender, Sy
 
 	if (e->ColumnIndex == 4) {
 		int index = e->RowIndex;
-		char unit;
+		char unit = ' ';
 		String^ value = dataGridView->Rows[index]->Cells[e->ColumnIndex]->Value->ToString();
 		try {
 			if (value == "град.К") unit = 'K';
 			else if (value == "град.С") unit = 'C';
-			if (value->Length == 1){
+			if (value->Length == 1) {
 				value == "К" || value == "к" || value == "K" || value == "k" ? unit = 'K' : ' ';
 				value == "С" || value == "с" || value == "C" || value == "c" ? unit = 'C' : ' ';
 			}
@@ -240,3 +240,342 @@ System::Void lab9::MainForm::buttonFillArrayManual_Click(System::Object^ sender,
 		MessageBox::Show(gcnew String(ex.what()), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 }
+
+void lab9::MainForm::SetEnabledShowGraphs()
+{
+	if (InputT->Text != "" && InputA->Text != "" && SelectSensor->SelectedItem
+		&& (radioButton1->Checked || radioButton2->Checked))
+		buttonShowGraphs->Enabled = true;
+	else
+		buttonShowGraphs->Enabled = false;
+}
+
+System::Void lab9::MainForm::tabControl_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
+{
+	if (tabControl->SelectedIndex == 3)
+	{
+		SelectSensor->Items->Clear();
+		for (int i = 0; i < SIZE; i++)
+		{
+			String^ sensor = String::Format("I={0}, T={1}; T1={2}; T2={3}, Ед.Изм=",
+				arraySensors[i].getInputSignal(), arraySensors[i].getTempCurrent(), arraySensors[i].getTempMin(), arraySensors[i].getTempMax())
+				+ (arraySensors[i].getUnit() == 'K' ? "K" : "C");
+			SelectSensor->Items->Add(sensor);
+		}
+		tabControl->SelectedIndex = 3;
+	}
+	if (tabControl->SelectedIndex == 2)
+	{
+		updateCombBoxSensors();
+		tabControl->SelectedIndex = 2;
+	}
+}
+
+System::Void lab9::MainForm::buttonShowGraphs_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	float T, A;
+	int index = SelectSensor->SelectedIndex;
+	bool isSin = radioButton1->Checked;
+	if (!float::TryParse(InputT->Text, T))
+	{
+		MessageBox::Show("Период должен быть вещественным числом!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		return;
+	}
+	if (!float::TryParse(InputA->Text, A))
+	{
+		MessageBox::Show("Амплитуда должна быть вещественным числом!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		return;
+	}
+	if (T < 0)
+	{
+		MessageBox::Show("Период должен быть вещественным числом!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		return;
+	}
+
+	int scaleI = int(numericScale->Value);
+	int scaleT = int(numericScaleTemp->Value);
+	if (radioButton1->Checked)
+	{
+		ShowGraphSinI(index, T, A, scaleI);
+		ShowGraphSinTemp(arraySensors[index], index, T, A, scaleT);
+	}
+	else
+	{
+		ShowGraphsSawI(arraySensors[index].getInputSignal(), T, A, scaleI);
+		ShowGraphsSawTemp(arraySensors[index], T, A, scaleT);
+	}
+}
+
+void lab9::MainForm::ShowGraphSinI(int index, float T, float A, int unit)
+{
+	int width = GraphI->Width, height = GraphI->Height;
+	Bitmap^ image = gcnew Bitmap(width, height);
+	Graphics^ g = Graphics::FromImage(image);
+	Pen^ pen = gcnew Pen(Color::Black, 1);
+
+	int midY = int(height / 2);
+	g->ScaleTransform(1, -1);
+	g->TranslateTransform(0, -midY);
+
+	// сетка
+	for (int i = unit; i < width; i += unit)
+		g->DrawLine(pen, i, -height / 2, i, height / 2);
+	for (int i = 0; i < height / 2; i += unit)
+	{
+		g->DrawLine(pen, 0, i, width, i);
+		g->DrawLine(pen, 0, -i, width, -i);
+	}
+
+	// оси координат
+	pen->Width = 2;
+	g->DrawLine(pen, 0, 0, width, 0);
+	g->DrawLine(pen, unit, -height / 2, unit, height / 2);
+
+	// график
+	double x1 = 0, x2 = width, step = 0.1;
+	double x = x1;
+	double y;
+	System::Collections::Generic::List<PointF>^ Points =
+		gcnew System::Collections::Generic::List<PointF>();
+
+	int i = 0;
+	while (x < x2)
+	{
+		y = calcSin(index, A, T, x);
+		Points->Add(PointF(x * unit + unit, y * unit));
+		x = x1 + step * i++;
+	}
+
+	pen->Color = Color::Red;
+	pen->Width = 3;
+
+	g->DrawLines(pen, Points->ToArray());
+
+	delete g;
+
+	GraphI->Image = image;
+}
+
+
+void lab9::MainForm::ShowGraphSinTemp(CurrentTempSensor sensor, int index, float T, float A, int unit)
+{
+	int width = GraphTemp->Width, height = GraphTemp->Height;
+	Bitmap^ image = gcnew Bitmap(width, height);
+	Graphics^ g = Graphics::FromImage(image);
+	Pen^ pen = gcnew Pen(Color::Black, 1);
+
+	int midY = int(height / 2);
+	g->ScaleTransform(1, -1);
+	g->TranslateTransform(0, -midY);
+
+	// сетка
+	for (int i = unit; i < width; i += unit)
+		g->DrawLine(pen, i, -height / 2, i, height / 2);
+	for (int i = 0; i < height / 2; i += unit)
+	{
+		g->DrawLine(pen, 0, i, width, i);
+		g->DrawLine(pen, 0, -i, width, -i);
+	}
+
+	// оси координат
+	pen->Width = 2;
+	g->DrawLine(pen, 0, 0, width, 0);
+	g->DrawLine(pen, unit, -height / 2, unit, height / 2);
+
+	// график
+	double x1 = 0, x2 = width, step = 0.1;
+	double x = x1;
+	double y;
+	System::Collections::Generic::List<PointF>^ Points =
+		gcnew System::Collections::Generic::List<PointF>();
+
+	int i = 0;
+	while (x < x2)
+	{
+		y = calcSin(index, A, T, x);
+		sensor.setInputSignal(y);
+		Points->Add(PointF(x * unit + unit, sensor.getTempCurrent() * unit));
+		x = x1 + step * i++;
+	}
+
+	pen->Color = Color::Red;
+	pen->Width = 3;
+
+	g->DrawLines(pen, Points->ToArray());
+
+	delete g;
+
+	GraphTemp->Image = image;
+}
+
+
+void lab9::MainForm::ShowGraphsSawI(float y0, float T, float A, int unit)
+{
+	int width = GraphI->Width, height = GraphI->Height;
+	Bitmap^ image = gcnew Bitmap(width, height);
+	Graphics^ g = Graphics::FromImage(image);
+	Pen^ pen = gcnew Pen(Color::Black, 1);
+
+	int midY = int(height / 2);
+	g->ScaleTransform(1, -1);
+	g->TranslateTransform(0, -midY);
+
+	// сетка
+	for (int i = unit; i < width; i += unit)
+		g->DrawLine(pen, i, -height / 2, i, height / 2);
+	for (int i = 0; i < height / 2; i += unit)
+	{
+		g->DrawLine(pen, 0, i, width, i);
+		g->DrawLine(pen, 0, -i, width, -i);
+	}
+
+	// оси координат
+	pen->Width = 2;
+	g->DrawLine(pen, 0, 0, width, 0);
+	g->DrawLine(pen, unit, -height / 2, unit, height / 2);
+
+	// график
+	double x1 = 0, x2 = width;
+	double x = x1;
+	double y;
+	System::Collections::Generic::List<PointF>^ Points =
+		gcnew System::Collections::Generic::List<PointF>();
+
+	int i = 0;
+	while (x < x2)
+	{
+		Points->Add(PointF(x * unit + unit, y0 * unit));
+		Points->Add(PointF((x + T) * unit + unit, (A + y0) * unit));
+		x = x1 + T * i++;
+	}
+
+	pen->Color = Color::Red;
+	pen->Width = 3;
+	g->DrawLines(pen, Points->ToArray());
+
+	delete g;
+	GraphI->Image = image;
+}
+
+void lab9::MainForm::ShowGraphsSawTemp(CurrentTempSensor sensor, float T, float A, int unit)
+{
+	int width = GraphTemp->Width, height = GraphTemp->Height;
+	Bitmap^ image = gcnew Bitmap(width, height);
+	Graphics^ g = Graphics::FromImage(image);
+	Pen^ pen = gcnew Pen(Color::Black, 1);
+
+	int midY = int(height / 2);
+	g->ScaleTransform(1, -1);
+	g->TranslateTransform(0, -midY);
+
+	// сетка
+	for (int i = unit; i < width; i += unit)
+		g->DrawLine(pen, i, -height / 2, i, height / 2);
+	for (int i = 0; i < height / 2; i += unit)
+	{
+		g->DrawLine(pen, 0, i, width, i);
+		g->DrawLine(pen, 0, -i, width, -i);
+	}
+
+	// оси координат
+	pen->Width = 2;
+	g->DrawLine(pen, 0, 0, width, 0);
+	g->DrawLine(pen, unit, -height / 2, unit, height / 2);
+
+	// график
+	double x1 = 0, x2 = width;
+	double x = x1;
+	double y;
+	double y0 = sensor.getInputSignal();
+	System::Collections::Generic::List<PointF>^ Points =
+		gcnew System::Collections::Generic::List<PointF>();
+
+	int i = 0;
+	while (x < x2)
+	{
+		sensor.setInputSignal(y0);
+		Points->Add(PointF(x * unit + unit, sensor.getTempCurrent() * unit));
+		sensor.setInputSignal(A + y0);
+		Points->Add(PointF((x + T) * unit + unit, sensor.getTempCurrent() * unit));
+		x = x1 + T * i++;
+	}
+
+	pen->Color = Color::Red;
+	pen->Width = 3;
+	g->DrawLines(pen, Points->ToArray());
+
+	delete g;
+	GraphTemp->Image = image;
+}
+
+System::Void lab9::MainForm::buttonResult_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	String^ resultStr;
+	buttonClear->Enabled = listBoxResult->Items->Count;
+	if (comboBoxOp->SelectedIndex == 0)
+	{
+		if (arraySensors[comboBoxSensor2->SelectedIndex].getTempCurrent() != 0)
+		{
+			float result = arraySensors[comboBoxSensor1->SelectedIndex] / arraySensors[comboBoxSensor2->SelectedIndex];
+			resultStr = String::Format("Отношение T двух выбранных датчиков = {0:F3}", result);
+		}
+		else
+		{
+			resultStr = "Ошибка! T датчика 2 = 0";
+		}
+		listBoxResult->Items->Add(resultStr);
+	}
+	else if (comboBoxOp->SelectedIndex == 1)
+	{
+		float result = arraySensors[comboBoxSensor1->SelectedIndex] - arraySensors[comboBoxSensor2->SelectedIndex];
+		resultStr = String::Format("Разность T двух выбранных датчиков = {0:F3}", result);
+		listBoxResult->Items->Add(resultStr);
+	}
+	else if (comboBoxOp->SelectedIndex == 2)
+	{
+		float k;
+		if (!float::TryParse(InputK->Text, k))
+		{
+			resultStr = "Параметр операции должен быть вещественным числом!";
+		}
+		else
+		{
+			arraySensors[comboBoxSensor1->SelectedIndex] += k;
+			CurrentTempSensor sensor = arraySensors[comboBoxSensor1->SelectedIndex];
+			resultStr = String::Format("Датчик 1: Входной сигнал = {0:F3}, Температура = {1}\n",
+				sensor.getInputSignal(), sensor.ToString());
+			enableButtonResult();
+		}
+		updateCombBoxSensors();
+		listBoxResult->Items->Add(resultStr);
+	}
+	else if (comboBoxOp->SelectedIndex == 3)
+	{
+		CurrentTempSensor sensor1 = arraySensors[comboBoxSensor1->SelectedIndex];
+		CurrentTempSensor sensor2 = arraySensors[comboBoxSensor2->SelectedIndex];
+		if (sensor1 == sensor2)
+			resultStr = "Значения T двух датчиков равны";
+		else if (sensor1 > sensor2)
+			resultStr = "T датчика 1 больше";
+		else if (sensor1 < sensor2)
+			resultStr = "T датчика 1 меньше";
+		else
+			resultStr = "Неопознанная ситуация";
+		listBoxResult->Items->Add(resultStr);
+	}
+}
+
+void lab9::MainForm::updateCombBoxSensors()
+{
+	comboBoxSensor1->Items->Clear();
+	comboBoxSensor2->Items->Clear();
+	for (int i = 0; i < SIZE; i++)
+	{
+		String^ sensor = String::Format("I={0}, T={1}; T1={2}; T2={3}, Ед.Изм=",
+			arraySensors[i].getInputSignal(), arraySensors[i].getTempCurrent(), arraySensors[i].getTempMin(), arraySensors[i].getTempMax())
+			+ (arraySensors[i].getUnit() == 'K' ? "K" : "C");
+		comboBoxSensor1->Items->Add(sensor);
+		comboBoxSensor2->Items->Add(sensor);
+	}
+}
+

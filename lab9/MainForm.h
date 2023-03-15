@@ -1,5 +1,6 @@
 #pragma once
 #include "CurrentTempSensor.h"
+#include <functional>
 
 namespace lab9 {
 
@@ -22,7 +23,8 @@ namespace lab9 {
 			//
 			//TODO: Add the constructor code here
 			//
-			MessageBox::Show("Лабораторная работа №9, вариант 5\nМалышев Максим, 2 курс, гр.ПМИ - 1", "Инфо", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			setComboBoxOp();
+			MessageBox::Show("Лабораторная работа №10, вариант 5\nМалышев Максим, 2 курс, гр.ПМИ - 1", "Инфо", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 
 	protected:
@@ -102,6 +104,51 @@ namespace lab9 {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ tempCurrent;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ unit;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ isOutRange;
+	private: System::Windows::Forms::TabPage^ tabPage1;
+	private: System::Windows::Forms::TabPage^ tabPage2;
+	private: System::Windows::Forms::GroupBox^ groupBox3;
+	private: System::Windows::Forms::PictureBox^ GraphTemp;
+
+	private: System::Windows::Forms::GroupBox^ groupBox2;
+	private: System::Windows::Forms::PictureBox^ GraphI;
+
+	private: System::Windows::Forms::GroupBox^ groupBox1;
+	private: System::Windows::Forms::Button^ buttonShowGraphs;
+
+	private: System::Windows::Forms::RadioButton^ radioButton2;
+	private: System::Windows::Forms::RadioButton^ radioButton1;
+	private: System::Windows::Forms::Label^ label17;
+	private: System::Windows::Forms::TextBox^ InputA;
+	private: System::Windows::Forms::Label^ label16;
+	private: System::Windows::Forms::TextBox^ InputT;
+	private: System::Windows::Forms::Label^ label15;
+	private: System::Windows::Forms::ComboBox^ SelectSensor;
+	private: System::Windows::Forms::Label^ label13;
+	private: System::Windows::Forms::Label^ label18;
+	private: System::Windows::Forms::NumericUpDown^ numericScale;
+	private: System::Windows::Forms::GroupBox^ groupBox4;
+	private: System::Windows::Forms::GroupBox^ groupBox5;
+	private: System::Windows::Forms::Button^ buttonResult;
+	private: System::Windows::Forms::TextBox^ InputK;
+
+
+	private: System::Windows::Forms::Label^ label21;
+	private: System::Windows::Forms::ComboBox^ comboBoxSensor1;
+
+	private: System::Windows::Forms::Label^ label23;
+	private: System::Windows::Forms::ListBox^ listBoxResult;
+
+	private: System::Windows::Forms::ComboBox^ comboBoxOp;
+
+	private: System::Windows::Forms::Label^ label20;
+	private: System::Windows::Forms::ComboBox^ comboBoxSensor2;
+
+
+	private: System::Windows::Forms::Label^ label19;
+	private: System::Windows::Forms::Button^ buttonClear;
+private: System::Windows::Forms::NumericUpDown^ numericScaleTemp;
+private: System::Windows::Forms::Label^ label22;
+
 
 
 
@@ -211,6 +258,40 @@ namespace lab9 {
 			this->tempCurrent = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->unit = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->isOutRange = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
+			this->listBoxResult = (gcnew System::Windows::Forms::ListBox());
+			this->groupBox5 = (gcnew System::Windows::Forms::GroupBox());
+			this->buttonClear = (gcnew System::Windows::Forms::Button());
+			this->comboBoxOp = (gcnew System::Windows::Forms::ComboBox());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->comboBoxSensor2 = (gcnew System::Windows::Forms::ComboBox());
+			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->buttonResult = (gcnew System::Windows::Forms::Button());
+			this->InputK = (gcnew System::Windows::Forms::TextBox());
+			this->label21 = (gcnew System::Windows::Forms::Label());
+			this->comboBoxSensor1 = (gcnew System::Windows::Forms::ComboBox());
+			this->label23 = (gcnew System::Windows::Forms::Label());
+			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->GraphTemp = (gcnew System::Windows::Forms::PictureBox());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->GraphI = (gcnew System::Windows::Forms::PictureBox());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->numericScale = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->buttonShowGraphs = (gcnew System::Windows::Forms::Button());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->InputA = (gcnew System::Windows::Forms::TextBox());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->InputT = (gcnew System::Windows::Forms::TextBox());
+			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->SelectSensor = (gcnew System::Windows::Forms::ComboBox());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->numericScaleTemp = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label22 = (gcnew System::Windows::Forms::Label());
 			this->tabControl->SuspendLayout();
 			this->tabInbut->SuspendLayout();
 			this->groupBoxIncremental->SuspendLayout();
@@ -218,18 +299,32 @@ namespace lab9 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridViewInput))->BeginInit();
 			this->tabEdit->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
+			this->tabPage1->SuspendLayout();
+			this->groupBox4->SuspendLayout();
+			this->groupBox5->SuspendLayout();
+			this->tabPage2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphTemp))->BeginInit();
+			this->groupBox2->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphI))->BeginInit();
+			this->groupBox1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScaleTemp))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// tabControl
 			// 
 			this->tabControl->Controls->Add(this->tabInbut);
 			this->tabControl->Controls->Add(this->tabEdit);
+			this->tabControl->Controls->Add(this->tabPage1);
+			this->tabControl->Controls->Add(this->tabPage2);
 			this->tabControl->ImeMode = System::Windows::Forms::ImeMode::On;
 			this->tabControl->Location = System::Drawing::Point(3, 12);
 			this->tabControl->Name = L"tabControl";
 			this->tabControl->SelectedIndex = 0;
 			this->tabControl->Size = System::Drawing::Size(706, 548);
 			this->tabControl->TabIndex = 0;
+			this->tabControl->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::tabControl_SelectedIndexChanged);
 			// 
 			// tabInbut
 			// 
@@ -644,6 +739,381 @@ namespace lab9 {
 			this->isOutRange->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			this->isOutRange->Width = 118;
 			// 
+			// tabPage1
+			// 
+			this->tabPage1->Controls->Add(this->groupBox4);
+			this->tabPage1->Controls->Add(this->groupBox5);
+			this->tabPage1->Location = System::Drawing::Point(4, 22);
+			this->tabPage1->Name = L"tabPage1";
+			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage1->Size = System::Drawing::Size(698, 522);
+			this->tabPage1->TabIndex = 2;
+			this->tabPage1->Text = L"Операции";
+			this->tabPage1->UseVisualStyleBackColor = true;
+			// 
+			// groupBox4
+			// 
+			this->groupBox4->Controls->Add(this->listBoxResult);
+			this->groupBox4->Location = System::Drawing::Point(298, 3);
+			this->groupBox4->Name = L"groupBox4";
+			this->groupBox4->Size = System::Drawing::Size(394, 513);
+			this->groupBox4->TabIndex = 3;
+			this->groupBox4->TabStop = false;
+			this->groupBox4->Text = L"Результат";
+			// 
+			// listBoxResult
+			// 
+			this->listBoxResult->FormattingEnabled = true;
+			this->listBoxResult->Location = System::Drawing::Point(6, 19);
+			this->listBoxResult->Name = L"listBoxResult";
+			this->listBoxResult->Size = System::Drawing::Size(382, 485);
+			this->listBoxResult->TabIndex = 0;
+			// 
+			// groupBox5
+			// 
+			this->groupBox5->Controls->Add(this->buttonClear);
+			this->groupBox5->Controls->Add(this->comboBoxOp);
+			this->groupBox5->Controls->Add(this->label20);
+			this->groupBox5->Controls->Add(this->comboBoxSensor2);
+			this->groupBox5->Controls->Add(this->label19);
+			this->groupBox5->Controls->Add(this->buttonResult);
+			this->groupBox5->Controls->Add(this->InputK);
+			this->groupBox5->Controls->Add(this->label21);
+			this->groupBox5->Controls->Add(this->comboBoxSensor1);
+			this->groupBox5->Controls->Add(this->label23);
+			this->groupBox5->Location = System::Drawing::Point(7, 3);
+			this->groupBox5->Name = L"groupBox5";
+			this->groupBox5->Size = System::Drawing::Size(285, 516);
+			this->groupBox5->TabIndex = 2;
+			this->groupBox5->TabStop = false;
+			this->groupBox5->Text = L"Выбор операции";
+			// 
+			// buttonClear
+			// 
+			this->buttonClear->Enabled = false;
+			this->buttonClear->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->buttonClear->Location = System::Drawing::Point(9, 351);
+			this->buttonClear->Name = L"buttonClear";
+			this->buttonClear->Size = System::Drawing::Size(253, 42);
+			this->buttonClear->TabIndex = 15;
+			this->buttonClear->Text = L"Очистить список";
+			this->buttonClear->UseVisualStyleBackColor = true;
+			this->buttonClear->Click += gcnew System::EventHandler(this, &MainForm::buttonClear_Click);
+			// 
+			// comboBoxOp
+			// 
+			this->comboBoxOp->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->comboBoxOp->FormattingEnabled = true;
+			this->comboBoxOp->Location = System::Drawing::Point(6, 173);
+			this->comboBoxOp->Name = L"comboBoxOp";
+			this->comboBoxOp->Size = System::Drawing::Size(256, 21);
+			this->comboBoxOp->TabIndex = 14;
+			this->comboBoxOp->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::comboBoxOp_SelectedIndexChanged);
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label20->Location = System::Drawing::Point(6, 147);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(65, 15);
+			this->label20->TabIndex = 13;
+			this->label20->Text = L"Операция";
+			// 
+			// comboBoxSensor2
+			// 
+			this->comboBoxSensor2->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->comboBoxSensor2->FormattingEnabled = true;
+			this->comboBoxSensor2->Location = System::Drawing::Point(6, 108);
+			this->comboBoxSensor2->Name = L"comboBoxSensor2";
+			this->comboBoxSensor2->Size = System::Drawing::Size(256, 21);
+			this->comboBoxSensor2->TabIndex = 12;
+			this->comboBoxSensor2->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::comboBoxSensor2_SelectedIndexChanged);
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label19->Location = System::Drawing::Point(6, 83);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(59, 15);
+			this->label19->TabIndex = 11;
+			this->label19->Text = L"Датчик 2";
+			// 
+			// buttonResult
+			// 
+			this->buttonResult->Enabled = false;
+			this->buttonResult->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->buttonResult->Location = System::Drawing::Point(9, 298);
+			this->buttonResult->Name = L"buttonResult";
+			this->buttonResult->Size = System::Drawing::Size(253, 42);
+			this->buttonResult->TabIndex = 10;
+			this->buttonResult->Text = L"Показать результат";
+			this->buttonResult->UseVisualStyleBackColor = true;
+			this->buttonResult->Click += gcnew System::EventHandler(this, &MainForm::buttonResult_Click);
+			// 
+			// InputK
+			// 
+			this->InputK->Enabled = false;
+			this->InputK->Location = System::Drawing::Point(162, 227);
+			this->InputK->Name = L"InputK";
+			this->InputK->Size = System::Drawing::Size(100, 20);
+			this->InputK->TabIndex = 6;
+			this->InputK->TextChanged += gcnew System::EventHandler(this, &MainForm::InputK_TextChanged);
+			// 
+			// label21
+			// 
+			this->label21->AutoSize = true;
+			this->label21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label21->Location = System::Drawing::Point(6, 217);
+			this->label21->Name = L"label21";
+			this->label21->Size = System::Drawing::Size(126, 30);
+			this->label21->TabIndex = 5;
+			this->label21->Text = L"Параметр операции\r\n(если есть)\r\n";
+			// 
+			// comboBoxSensor1
+			// 
+			this->comboBoxSensor1->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->comboBoxSensor1->FormattingEnabled = true;
+			this->comboBoxSensor1->Location = System::Drawing::Point(6, 43);
+			this->comboBoxSensor1->Name = L"comboBoxSensor1";
+			this->comboBoxSensor1->Size = System::Drawing::Size(256, 21);
+			this->comboBoxSensor1->TabIndex = 2;
+			this->comboBoxSensor1->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::comboBoxSensor1_SelectedIndexChanged);
+			// 
+			// label23
+			// 
+			this->label23->AutoSize = true;
+			this->label23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label23->Location = System::Drawing::Point(6, 19);
+			this->label23->Name = L"label23";
+			this->label23->Size = System::Drawing::Size(59, 15);
+			this->label23->TabIndex = 1;
+			this->label23->Text = L"Датчик 1";
+			// 
+			// tabPage2
+			// 
+			this->tabPage2->Controls->Add(this->groupBox3);
+			this->tabPage2->Controls->Add(this->groupBox2);
+			this->tabPage2->Controls->Add(this->groupBox1);
+			this->tabPage2->Location = System::Drawing::Point(4, 22);
+			this->tabPage2->Name = L"tabPage2";
+			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage2->Size = System::Drawing::Size(698, 522);
+			this->tabPage2->TabIndex = 3;
+			this->tabPage2->Text = L"Графики";
+			this->tabPage2->UseVisualStyleBackColor = true;
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->GraphTemp);
+			this->groupBox3->Location = System::Drawing::Point(250, 260);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(440, 256);
+			this->groupBox3->TabIndex = 2;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"График выходного сигнала T(t)";
+			// 
+			// GraphTemp
+			// 
+			this->GraphTemp->Location = System::Drawing::Point(6, 19);
+			this->GraphTemp->Name = L"GraphTemp";
+			this->GraphTemp->Size = System::Drawing::Size(428, 227);
+			this->GraphTemp->TabIndex = 0;
+			this->GraphTemp->TabStop = false;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->GraphI);
+			this->groupBox2->Location = System::Drawing::Point(250, 0);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(440, 259);
+			this->groupBox2->TabIndex = 1;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"График входного сигнала I(t)";
+			// 
+			// GraphI
+			// 
+			this->GraphI->Location = System::Drawing::Point(6, 19);
+			this->GraphI->Name = L"GraphI";
+			this->GraphI->Size = System::Drawing::Size(428, 234);
+			this->GraphI->TabIndex = 0;
+			this->GraphI->TabStop = false;
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->numericScaleTemp);
+			this->groupBox1->Controls->Add(this->label22);
+			this->groupBox1->Controls->Add(this->numericScale);
+			this->groupBox1->Controls->Add(this->label18);
+			this->groupBox1->Controls->Add(this->buttonShowGraphs);
+			this->groupBox1->Controls->Add(this->radioButton2);
+			this->groupBox1->Controls->Add(this->radioButton1);
+			this->groupBox1->Controls->Add(this->label17);
+			this->groupBox1->Controls->Add(this->InputA);
+			this->groupBox1->Controls->Add(this->label16);
+			this->groupBox1->Controls->Add(this->InputT);
+			this->groupBox1->Controls->Add(this->label15);
+			this->groupBox1->Controls->Add(this->SelectSensor);
+			this->groupBox1->Controls->Add(this->label13);
+			this->groupBox1->Location = System::Drawing::Point(5, 0);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(239, 516);
+			this->groupBox1->TabIndex = 0;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Параметры графика";
+			// 
+			// numericScale
+			// 
+			this->numericScale->Location = System::Drawing::Point(93, 294);
+			this->numericScale->Name = L"numericScale";
+			this->numericScale->Size = System::Drawing::Size(67, 20);
+			this->numericScale->TabIndex = 12;
+			this->numericScale->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
+			this->numericScale->ValueChanged += gcnew System::EventHandler(this, &MainForm::numericScale_ValueChanged);
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label18->Location = System::Drawing::Point(6, 294);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(81, 15);
+			this->label18->TabIndex = 11;
+			this->label18->Text = L"Масштаб I(t):";
+			// 
+			// buttonShowGraphs
+			// 
+			this->buttonShowGraphs->Enabled = false;
+			this->buttonShowGraphs->Location = System::Drawing::Point(9, 393);
+			this->buttonShowGraphs->Name = L"buttonShowGraphs";
+			this->buttonShowGraphs->Size = System::Drawing::Size(163, 42);
+			this->buttonShowGraphs->TabIndex = 10;
+			this->buttonShowGraphs->Text = L"Отобразить\r\nграфики";
+			this->buttonShowGraphs->UseVisualStyleBackColor = true;
+			this->buttonShowGraphs->Click += gcnew System::EventHandler(this, &MainForm::buttonShowGraphs_Click);
+			// 
+			// radioButton2
+			// 
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Location = System::Drawing::Point(9, 259);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(101, 17);
+			this->radioButton2->TabIndex = 9;
+			this->radioButton2->TabStop = true;
+			this->radioButton2->Text = L"Пилообразный";
+			this->radioButton2->UseVisualStyleBackColor = true;
+			this->radioButton2->Click += gcnew System::EventHandler(this, &MainForm::radioButton2_Click);
+			// 
+			// radioButton1
+			// 
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Location = System::Drawing::Point(9, 236);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(117, 17);
+			this->radioButton1->TabIndex = 8;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"Синусиоидальный";
+			this->radioButton1->UseVisualStyleBackColor = true;
+			this->radioButton1->Click += gcnew System::EventHandler(this, &MainForm::radioButton1_Click);
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label17->Location = System::Drawing::Point(6, 210);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(112, 15);
+			this->label17->TabIndex = 7;
+			this->label17->Text = L"Закон изменения:";
+			// 
+			// InputA
+			// 
+			this->InputA->Location = System::Drawing::Point(9, 162);
+			this->InputA->Name = L"InputA";
+			this->InputA->Size = System::Drawing::Size(100, 20);
+			this->InputA->TabIndex = 6;
+			this->InputA->TextChanged += gcnew System::EventHandler(this, &MainForm::InputA_TextChanged);
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label16->Location = System::Drawing::Point(6, 144);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(70, 15);
+			this->label16->TabIndex = 5;
+			this->label16->Text = L"Амплитуда";
+			// 
+			// InputT
+			// 
+			this->InputT->Location = System::Drawing::Point(9, 105);
+			this->InputT->Name = L"InputT";
+			this->InputT->Size = System::Drawing::Size(100, 20);
+			this->InputT->TabIndex = 4;
+			this->InputT->TextChanged += gcnew System::EventHandler(this, &MainForm::InputT_TextChanged);
+			// 
+			// label15
+			// 
+			this->label15->AutoSize = true;
+			this->label15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label15->Location = System::Drawing::Point(6, 87);
+			this->label15->Name = L"label15";
+			this->label15->Size = System::Drawing::Size(51, 15);
+			this->label15->TabIndex = 3;
+			this->label15->Text = L"Период";
+			// 
+			// SelectSensor
+			// 
+			this->SelectSensor->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->SelectSensor->FormattingEnabled = true;
+			this->SelectSensor->Location = System::Drawing::Point(6, 41);
+			this->SelectSensor->Name = L"SelectSensor";
+			this->SelectSensor->Size = System::Drawing::Size(227, 21);
+			this->SelectSensor->TabIndex = 2;
+			this->SelectSensor->SelectedIndexChanged += gcnew System::EventHandler(this, &MainForm::SelectSensor_SelectedIndexChanged);
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label13->Location = System::Drawing::Point(6, 19);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(49, 15);
+			this->label13->TabIndex = 1;
+			this->label13->Text = L"Датчик";
+			// 
+			// numericScaleTemp
+			// 
+			this->numericScaleTemp->Location = System::Drawing::Point(93, 320);
+			this->numericScaleTemp->Name = L"numericScaleTemp";
+			this->numericScaleTemp->Size = System::Drawing::Size(67, 20);
+			this->numericScaleTemp->TabIndex = 14;
+			this->numericScaleTemp->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
+			this->numericScaleTemp->ValueChanged += gcnew System::EventHandler(this, &MainForm::numericScaleTemp_ValueChanged);
+			// 
+			// label22
+			// 
+			this->label22->AutoSize = true;
+			this->label22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label22->Location = System::Drawing::Point(6, 320);
+			this->label22->Name = L"label22";
+			this->label22->Size = System::Drawing::Size(85, 15);
+			this->label22->TabIndex = 13;
+			this->label22->Text = L"Масштаб T(t):";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -665,6 +1135,19 @@ namespace lab9 {
 			this->tabEdit->ResumeLayout(false);
 			this->tabEdit->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->EndInit();
+			this->tabPage1->ResumeLayout(false);
+			this->groupBox4->ResumeLayout(false);
+			this->groupBox5->ResumeLayout(false);
+			this->groupBox5->PerformLayout();
+			this->tabPage2->ResumeLayout(false);
+			this->groupBox3->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphTemp))->EndInit();
+			this->groupBox2->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphI))->EndInit();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScaleTemp))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -706,6 +1189,15 @@ namespace lab9 {
 		buttonFillArrayManual->Enabled = enableButton;
 	}
 
+	private: void enableButtonResult() {
+		if (comboBoxSensor1->SelectedItem && comboBoxSensor2->SelectedItem
+			&& comboBoxOp->SelectedItem && comboBoxOp->SelectedItem == 2)
+			buttonResult->Enabled = InputK->Text->Length > 0;
+		else if (comboBoxSensor1->SelectedItem && comboBoxSensor2->SelectedItem && comboBoxOp->SelectedItem)
+			buttonResult->Enabled = true;
+		else  buttonResult->Enabled = false;
+	}
+
 	private: System::Void buttonFillArrayInc_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: void SetDataGridViewDataSource();
@@ -714,5 +1206,71 @@ namespace lab9 {
 
 	private: void SetDataGridViewInput();
 	private: System::Void buttonFillArrayManual_Click(System::Object^ sender, System::EventArgs^ e);
-	};
+	private: System::Void domainUpDown1_SelectedItemChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+
+
+	private: System::Void radioButton1_Click(System::Object^ sender, System::EventArgs^ e) {
+		radioButton1->Checked = true;
+		SetEnabledShowGraphs();
+		if (radioButton2->Checked) radioButton2->Checked = false;
+	}
+	private: System::Void radioButton2_Click(System::Object^ sender, System::EventArgs^ e) {
+		radioButton2->Checked = true;
+		SetEnabledShowGraphs();
+		if (radioButton1->Checked) radioButton1->Checked = false;
+	}
+	private: System::Void InputT_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		SetEnabledShowGraphs();
+	}
+	private: System::Void InputA_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		SetEnabledShowGraphs();
+	}
+	private: System::Void SelectSensor_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		SetEnabledShowGraphs();
+	}
+
+	private: void SetEnabledShowGraphs();
+	private: System::Void tabControl_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void buttonShowGraphs_Click(System::Object^ sender, System::EventArgs^ e);
+
+	private: void ShowGraphSinI(int index, float T, float A, int unit);
+	private: void ShowGraphSinTemp(CurrentTempSensor sensor, int index, float T, float A, int unit);
+	private: void ShowGraphsSawI(float y0, float T, float A, int unit);
+	private: void ShowGraphsSawTemp(CurrentTempSensor sensor, float T, float A, int unit);
+
+	private: System::Void numericScale_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (numericScale->Value < 1) numericScale->Value = 1;
+	}
+
+	private: void setComboBoxOp() {
+		for (int i = 0; i < COUNT_OPS; i++)
+		{
+			String^ item = gcnew String(dataOps[i]);
+			comboBoxOp->Items->Add(item);
+		}
+	}
+	private: System::Void comboBoxOp_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		InputK->Enabled = comboBoxOp->SelectedIndex == 2;
+		enableButtonResult();
+	}
+	private: System::Void comboBoxSensor1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		enableButtonResult();
+	}
+	private: System::Void comboBoxSensor2_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		enableButtonResult();
+	}
+	private: System::Void InputK_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		enableButtonResult();
+	}
+	private: System::Void buttonClear_Click(System::Object^ sender, System::EventArgs^ e) {
+		listBoxResult->Items->Clear();
+		buttonClear->Enabled = false;
+	}
+	private: System::Void buttonResult_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void updateCombBoxSensors();
+	private: System::Void numericScaleTemp_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (numericScaleTemp->Value < 1) numericScaleTemp->Value = 1;
+	}
+};
 }
