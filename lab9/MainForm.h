@@ -146,8 +146,8 @@ namespace lab9 {
 
 	private: System::Windows::Forms::Label^ label19;
 	private: System::Windows::Forms::Button^ buttonClear;
-private: System::Windows::Forms::NumericUpDown^ numericScaleTemp;
-private: System::Windows::Forms::Label^ label22;
+	private: System::Windows::Forms::NumericUpDown^ numericScaleTemp;
+	private: System::Windows::Forms::Label^ label22;
 
 
 
@@ -278,6 +278,8 @@ private: System::Windows::Forms::Label^ label22;
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->GraphI = (gcnew System::Windows::Forms::PictureBox());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->numericScaleTemp = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label22 = (gcnew System::Windows::Forms::Label());
 			this->numericScale = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label18 = (gcnew System::Windows::Forms::Label());
 			this->buttonShowGraphs = (gcnew System::Windows::Forms::Button());
@@ -290,8 +292,6 @@ private: System::Windows::Forms::Label^ label22;
 			this->label15 = (gcnew System::Windows::Forms::Label());
 			this->SelectSensor = (gcnew System::Windows::Forms::ComboBox());
 			this->label13 = (gcnew System::Windows::Forms::Label());
-			this->numericScaleTemp = (gcnew System::Windows::Forms::NumericUpDown());
-			this->label22 = (gcnew System::Windows::Forms::Label());
 			this->tabControl->SuspendLayout();
 			this->tabInbut->SuspendLayout();
 			this->groupBoxIncremental->SuspendLayout();
@@ -308,8 +308,8 @@ private: System::Windows::Forms::Label^ label22;
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphI))->BeginInit();
 			this->groupBox1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScaleTemp))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// tabControl
@@ -337,6 +337,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->tabInbut->TabIndex = 0;
 			this->tabInbut->Text = L"Ввод данных";
 			this->tabInbut->UseVisualStyleBackColor = true;
+			this->tabInbut->Click += gcnew System::EventHandler(this, &MainForm::tabInbut_Click);
 			// 
 			// groupBoxIncremental
 			// 
@@ -366,6 +367,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->groupBoxIncremental->TabIndex = 1;
 			this->groupBoxIncremental->TabStop = false;
 			this->groupBoxIncremental->Text = L"По порядку с шагом";
+			this->groupBoxIncremental->Enter += gcnew System::EventHandler(this, &MainForm::groupBoxIncremental_Enter);
 			// 
 			// buttonFillArrayInc
 			// 
@@ -450,6 +452,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label6->Size = System::Drawing::Size(175, 15);
 			this->label6->TabIndex = 11;
 			this->label6->Text = L"Максимальная температура";
+			this->label6->Click += gcnew System::EventHandler(this, &MainForm::label6_Click);
 			// 
 			// textBox4
 			// 
@@ -467,6 +470,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label7->Size = System::Drawing::Size(30, 13);
 			this->label7->TabIndex = 9;
 			this->label7->Text = L"Шаг:";
+			this->label7->Click += gcnew System::EventHandler(this, &MainForm::label7_Click);
 			// 
 			// textBox5
 			// 
@@ -484,6 +488,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label8->Size = System::Drawing::Size(115, 13);
 			this->label8->TabIndex = 7;
 			this->label8->Text = L"Начальное значение:";
+			this->label8->Click += gcnew System::EventHandler(this, &MainForm::label8_Click);
 			// 
 			// label5
 			// 
@@ -495,6 +500,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label5->Size = System::Drawing::Size(170, 15);
 			this->label5->TabIndex = 6;
 			this->label5->Text = L"Минимальная температура";
+			this->label5->Click += gcnew System::EventHandler(this, &MainForm::label5_Click);
 			// 
 			// textBox3
 			// 
@@ -512,6 +518,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label4->Size = System::Drawing::Size(30, 13);
 			this->label4->TabIndex = 4;
 			this->label4->Text = L"Шаг:";
+			this->label4->Click += gcnew System::EventHandler(this, &MainForm::label4_Click);
 			// 
 			// textBox2
 			// 
@@ -529,6 +536,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label3->Size = System::Drawing::Size(115, 13);
 			this->label3->TabIndex = 2;
 			this->label3->Text = L"Начальное значение:";
+			this->label3->Click += gcnew System::EventHandler(this, &MainForm::label3_Click);
 			// 
 			// textBox1
 			// 
@@ -548,6 +556,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label2->Size = System::Drawing::Size(140, 15);
 			this->label2->TabIndex = 0;
 			this->label2->Text = L"Размерность массива:";
+			this->label2->Click += gcnew System::EventHandler(this, &MainForm::label2_Click);
 			// 
 			// groupBoxManual
 			// 
@@ -561,6 +570,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->groupBoxManual->TabIndex = 0;
 			this->groupBoxManual->TabStop = false;
 			this->groupBoxManual->Text = L"Вручную";
+			this->groupBoxManual->Enter += gcnew System::EventHandler(this, &MainForm::groupBoxManual_Enter);
 			// 
 			// buttonFillArrayManual
 			// 
@@ -579,6 +589,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->textBox8->Name = L"textBox8";
 			this->textBox8->Size = System::Drawing::Size(114, 20);
 			this->textBox8->TabIndex = 3;
+			this->textBox8->TextChanged += gcnew System::EventHandler(this, &MainForm::textBox8_TextChanged);
 			this->textBox8->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainForm::textBox8_KeyDown);
 			// 
 			// label12
@@ -591,6 +602,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->label12->Size = System::Drawing::Size(140, 15);
 			this->label12->TabIndex = 2;
 			this->label12->Text = L"Размерность массива:";
+			this->label12->Click += gcnew System::EventHandler(this, &MainForm::label12_Click);
 			// 
 			// dataGridViewInput
 			// 
@@ -608,6 +620,7 @@ private: System::Windows::Forms::Label^ label22;
 			this->dataGridViewInput->RowHeadersVisible = false;
 			this->dataGridViewInput->Size = System::Drawing::Size(324, 311);
 			this->dataGridViewInput->TabIndex = 1;
+			this->dataGridViewInput->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MainForm::dataGridViewInput_CellContentClick);
 			// 
 			// tempMinInput
 			// 
@@ -969,6 +982,26 @@ private: System::Windows::Forms::Label^ label22;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Параметры графика";
 			// 
+			// numericScaleTemp
+			// 
+			this->numericScaleTemp->Location = System::Drawing::Point(93, 320);
+			this->numericScaleTemp->Name = L"numericScaleTemp";
+			this->numericScaleTemp->Size = System::Drawing::Size(67, 20);
+			this->numericScaleTemp->TabIndex = 14;
+			this->numericScaleTemp->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
+			this->numericScaleTemp->ValueChanged += gcnew System::EventHandler(this, &MainForm::numericScaleTemp_ValueChanged);
+			// 
+			// label22
+			// 
+			this->label22->AutoSize = true;
+			this->label22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label22->Location = System::Drawing::Point(6, 320);
+			this->label22->Name = L"label22";
+			this->label22->Size = System::Drawing::Size(85, 15);
+			this->label22->TabIndex = 13;
+			this->label22->Text = L"Масштаб T(t):";
+			// 
 			// numericScale
 			// 
 			this->numericScale->Location = System::Drawing::Point(93, 294);
@@ -1094,26 +1127,6 @@ private: System::Windows::Forms::Label^ label22;
 			this->label13->TabIndex = 1;
 			this->label13->Text = L"Датчик";
 			// 
-			// numericScaleTemp
-			// 
-			this->numericScaleTemp->Location = System::Drawing::Point(93, 320);
-			this->numericScaleTemp->Name = L"numericScaleTemp";
-			this->numericScaleTemp->Size = System::Drawing::Size(67, 20);
-			this->numericScaleTemp->TabIndex = 14;
-			this->numericScaleTemp->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
-			this->numericScaleTemp->ValueChanged += gcnew System::EventHandler(this, &MainForm::numericScaleTemp_ValueChanged);
-			// 
-			// label22
-			// 
-			this->label22->AutoSize = true;
-			this->label22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label22->Location = System::Drawing::Point(6, 320);
-			this->label22->Name = L"label22";
-			this->label22->Size = System::Drawing::Size(85, 15);
-			this->label22->TabIndex = 13;
-			this->label22->Text = L"Масштаб T(t):";
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1146,8 +1159,8 @@ private: System::Windows::Forms::Label^ label22;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->GraphI))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScaleTemp))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericScale))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -1272,5 +1285,31 @@ private: System::Windows::Forms::Label^ label22;
 	private: System::Void numericScaleTemp_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		if (numericScaleTemp->Value < 1) numericScaleTemp->Value = 1;
 	}
-};
+	private: System::Void label12_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void textBox8_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void dataGridViewInput_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	}
+	private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void tabInbut_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label5_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label4_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label6_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label8_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void label7_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void groupBoxIncremental_Enter(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void groupBoxManual_Enter(System::Object^ sender, System::EventArgs^ e) {
+	}
+	};
 }
